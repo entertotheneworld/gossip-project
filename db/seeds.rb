@@ -5,6 +5,7 @@ City.destroy_all
 Gossip.destroy_all
 Tag.destroy_all
 TagGossip.destroy_all
+PrivateMessage.destroy_all
 
 10.times do
   City.create(name: Faker::Address.city, zip_code: Faker::Address.zip)
@@ -25,3 +26,12 @@ end
 Gossip.all.each{|gossip|
   TagGossip.create(gossip: gossip, tag: Tag.all.sample)
 }
+
+10.times do
+  user_sender = User.all.sample
+  user_recipient = User.all.sample
+  while user_sender == user_recipient
+    user_recipient = User.all.sample
+  end
+  PrivateMessage.create(content: Faker::Lorem.paragraph_by_chars(number: 256, supplemental: false), sender: user_sender, recipient: user_recipient)
+end
